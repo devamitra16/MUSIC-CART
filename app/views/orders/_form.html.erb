@@ -1,0 +1,27 @@
+
+<%= simple_form_for(@order) do |f| %>
+  <%= f.error_notification %>
+  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+ 
+
+  <p>
+    <%= f.label :contact_number %><br>
+    <%= f.text_area :contact_number %>
+  </p>
+  <p>
+    <%= f.label :Delivery_address %><br>
+    <%= f.text_area :address %>
+  </p>
+  <p>
+    <%= f.submit :Place_order , class: 'button is-warning'%>
+    <%#= link_to 'SUBMIT',order_path, class:'button is-light' %>
+  </p>
+  <!-- <div class="form-inputs">
+  </div>
+
+  <div class="form-actions">
+    <%#= f.button :submit %>
+  </div> -->
+<%end %>
+
+
