@@ -3,7 +3,7 @@ class InstrumentsController < ApplicationController
   before_action :set_instrument, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, except: [:index, :show]
   
-  before_action :acc_type_is_customer?, only: [:edit, :new ]
+  before_action :acc_type_is_customer?, only: [:edit, :new, :create ]
 
   
 
@@ -38,12 +38,12 @@ class InstrumentsController < ApplicationController
   
   def create
     @instrument = current_user.instruments.build(instrument_params)
-
     respond_to do |format|
       if @instrument.save
-        format.html { redirect_to @instrument, notice: 'Instrument was successfully created.' }
+        format.html { redirect_to instruments_url, notice: 'Instrument was successfully created.' }
         format.json { render :show, status: :created, location: @instrument }
       else
+        
         format.html { render :new }
         format.json { render json: @instrument.errors, status: :unprocessable_entity }
       end
@@ -54,6 +54,7 @@ class InstrumentsController < ApplicationController
   def update
     respond_to do |format|
       if @instrument.update(instrument_params)
+       
         format.html { redirect_to @instrument, notice: 'Instrument was successfully updated.' }
         format.json { render :show, status: :ok, location: @instrument }
       else
@@ -80,7 +81,7 @@ class InstrumentsController < ApplicationController
 
    
     def instrument_params
-      params.require(:instrument).permit(:brand, :model, :description, :condition, :finish, :title, :price, :image, :quantity)
+      params.require(:instrument).permit(:brand, :model, :description, :condition, :finish, :title, :price, :image, :quantity, :color)
     end
 
     def acc_type_is_customer?

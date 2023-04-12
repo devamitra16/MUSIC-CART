@@ -10,4 +10,15 @@ RSpec.describe Cart, type: :model do
 			expect(cart.user).to eq_to(user)
 		end
 	end	
+
+
+  context "has many" do
+    
+        it 'should have has many association' do
+        association = Cart.reflect_on_association(:orders).macro
+        expect(association).to be(:has_many)
+      
+   end
+  end
+
 end
