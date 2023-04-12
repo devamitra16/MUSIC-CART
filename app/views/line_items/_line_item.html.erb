@@ -1,6 +1,7 @@
 <div class="columns align-items-center">
   <div class="column is-1">
-    <%= line_item.quantity %>
+    <%#= line_item.quantity %>
+    <strong class="f4"><%= number_to_currency(line_item.total_price) %></strong>
   </div>
   <div class="column is-2">
     <figure class="is-128x128 image">
@@ -13,14 +14,51 @@
       <div class="content column is-9">
         <%= truncate(line_item.instrument.description, length: 140) %>
       </div>
+      <%= text_field_tag 'quantity' , "#{line_item.quantity}",class: "button is-warning",disabled:true %>
+    <%= button_tag "+" ,{id: "addQuantity",class: "button is-danger" }%>
+    <%= button_tag "-" ,{id: "removeQuantity",class: "button is-danger" } %>
       <div class="column is-3 has-text-right">
-        <strong class="f4"><%= number_to_currency(line_item.total_price) %></strong>
+        
       </div>
     </div>
   </div>
 </div>
 
 <div class="has-text-right">
+  <!-- <%#= link_to 'Add quantity',r,method: :get, class: "button is-small mb4" %>
+  <%#= link_to 'Reduce quantity',root_path,method: :get, class: "button is-small mb4" %> -->
+  
   <%= link_to 'Remove Item', line_item, method: :delete, data: { confirm: "Are you sure? " }, class: "button is-small mb4" %>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js">
+  
+</script>
+<script>
+  $('#addQuantity').click(function(){
+    var id=<%= line_item.id %>
+    $.ajax('/line_items/'+id+'/add_quantity',
+    {
+      success:function(data,status, xhr){
+        
+        $('#quantity').val(data.quantity);
+      }
+      
+    });
+    // console.log("Quantity has been added");
+  });
+</script>
 
+<script>
+  $('#removeQuantity').click(function(){
+    var id=<%= line_item.id %>
+    $.ajax('/line_items/'+id+'/remove_quantity',
+    {
+      success:function(data,status, xhr){
+        
+        $('#quantity').val(data.quantity);
+      }
+      
+    });
+    
+  });
+</script>

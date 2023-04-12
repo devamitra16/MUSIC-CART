@@ -53,4 +53,8 @@ $link-hover: #222;
       right: 9px;
     }
   }
+  .field column is-9 head{
+    display:flex;
+    flex-direction:column;
+  }
 }

@@ -33,6 +33,12 @@
           </div>
         </div>
 
+        <div class="field">
+          <div class="control">
+            <%= f.input :quantity, required: true, input_html: { class:"textarea" }, wrapper: false, label_html: { class:"label" } %>
+          </div>
+        </div>
+
         <div class="columns">
           <div class="field column is-4">
             <div class="control">
@@ -53,7 +59,7 @@
               <label class="label">Color</label>
               <div class="control has-icons-left">
                 <span class="select">
-                  <%= f.input_field :color, collection: Instrument::FINISH, prompt: "Select finish" %>
+                  <%= f.input_field :color, collection: Instrument::COLOR, prompt: "Select color" %>
                 </span>
                 <span class="icon is-small is-left">
                   <i class="fa fa-paint-brush"></i>
@@ -61,6 +67,7 @@
               </div>
             </div>
            </div>
+           
 
           <div class="field column is-4">
             <div class="control">

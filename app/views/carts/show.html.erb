@@ -3,6 +3,7 @@
 </div>
 <hr />
 <section class="section">
+  <%if @cart.line_items.count > 0 %>
   <%= render(@cart.line_items) %>
 
   <div class="columns">
@@ -16,4 +17,8 @@
       </h4>
     </div>
   </div>
+  
+  <%else%>
+  <h1> Your Cart is Empty </h1>
+  <%end%>
 </section>

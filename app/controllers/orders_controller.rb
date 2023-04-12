@@ -1,53 +1,62 @@
 class OrdersController < ApplicationController
   before_action :set_order, only: %i[ show edit update destroy ]
-   
-  # GET /orders or /orders.json
+   before_action :acc_type_is_seller?, only: [:edit, :new , :index, :show, :create  , :destroy]
+  
+
   def index
     @orders = Order.all
   end
 
-  # GET /orders/1 or /orders/1.json
+
   def show
     @order=Order.find(params[:id])
   end
 
-  # GET /orders/new
+ 
   def new
     @order = Order.new
+    @order.build_payment
+    
   end
 
-  # GET /orders/1/edit
+ 
   def edit
   end
 
-  # POST /orders or /orders.json
-  # def create
-  #   @order = Order.new(order_params)
-
-  #   respond_to do |format|
-  #     if @order.save
-  #       format.html { redirect_to order_url(@order), notice: "Order was successfully created." }
-  #       format.json { render :show, status: :created, location: @order }
-  #     else
-  #       format.html { render :new, status: :unprocessable_entity }
-  #       format.json { render json: @order.errors, status: :unprocessable_entity }
-  #     end
-  #   end
-  # end
+ 
   def create
   @order = Order.new(order_params)
-  @current_cart.line_items.each do |item|
-    @order.line_items << item
-    item.cart_id = nil
-  end
-  @order.save
+  @order.user = current_user
+  @payment = @order.payment
+  @payment.user = current_user
   
-  Cart.destroy(session[:cart_id])
-  session[:cart_id] = nil
-  redirect_to orders_path
-end
+  
+  @order.cart=current_user.cart
+  @order.save
 
-  # PATCH/PUT /orders/1 or /orders/1.json
+
+  
+        current_user.cart.line_items.each do |line_item|
+        
+          @order.ordered_items.create!(         
+             instrument_id: line_item.instrument_id,
+             quantity:   line_item.quantity 
+          )
+          
+          end
+
+  @payment.order_id=@order.id
+  @payment.pay_amount = @order.total_price
+  @payment.save 
+    @order.save     
+  # current_user.cart.line_items.destroy_all
+  # Cart.destroy(session[:cart_id])
+  # session[:cart_id] = nil
+    redirect_to orders_path
+  end
+
+
+ 
   def update
     respond_to do |format|
       if @order.update(order_params)
@@ -60,7 +69,7 @@ end
     end
   end
 
-  # DELETE /orders/1 or /orders/1.json
+  
   def destroy
     @order.destroy
 
@@ -71,13 +80,18 @@ end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+    
     def set_order
       @order = Order.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
+  
     def order_params
-      params.require(:order).permit(:address,:contact_number)
+      params.require(:order).permit(:address,:contact_number,payment_attributes: [:card_number,:expiry_month,:expiry_year,:cvv,:name_on_the_card])
+    end
+    def acc_type_is_seller?
+       if current_user.accountable_type == "Seller"
+         redirect_to root_path, notice: "You are logged in as Seller"
+       end
     end
 end

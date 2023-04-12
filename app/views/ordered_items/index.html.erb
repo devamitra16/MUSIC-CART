@@ -1,0 +1,55 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Ordered Items</h1>
+
+<!-- <table>
+  <thead>
+    <tr>
+      <th>Order</th>
+      <th>Instrument</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody> -->
+    
+  <!-- </tbody>
+</table> --> 
+<section class="section">
+<% @ordered_items.each do |ordered_item| %>
+  <div class="columns align-items-center">
+  <div class="column is-1">
+    <%= ordered_item.quantity %>
+  </div>
+  <div class="column is-2">
+    <figure class="is-128x128 image">
+      <%= image_tag(ordered_item.instrument.image_url(:thumb)) %>
+    </figure>
+  </div>
+  <div class="column is-9">
+    <strong><%= ordered_item.instrument.title %></strong>
+    <div class="columns align-items-center">
+      <div class="content column is-9">
+        <%= truncate(ordered_item.instrument.description, length: 140) %>
+        <br>
+        <%=ordered_item.created_at%>
+      
+      </div>
+      <div class="column is-3 has-text-right">
+        <strong class="f4"><%= number_to_currency(ordered_item.total_price) %></strong>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+      <br>
+      <br>
+      <br>
+    <% end %>
+
+</section>
+
+
+
+
+<%#= link_to 'New Ordered Item', new_ordered_item_path %>

@@ -2,29 +2,40 @@ class InstrumentsController < ApplicationController
   
   before_action :set_instrument, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, except: [:index, :show]
+  
+  before_action :acc_type_is_customer?, only: [:edit, :new ]
 
-  # GET /instruments
-  # GET /instruments.json
+  
+
+ 
   def index
     @instruments = Instrument.all.order("created_at desc")
   end
 
-  # GET /instruments/1
-  # GET /instruments/1.json
+
+  def search
+    @instruments=Instrument.where("title LIKE ?","%"+params[:q]+"%")
+  end
+                                        
+
+  
   def show
+    
   end
 
-  # GET /instruments/new
+  
+
+
+
+  
   def new
     @instrument = current_user.instruments.build
   end
 
-  # GET /instruments/1/edit
   def edit
   end
 
-  # POST /instruments
-  # POST /instruments.json
+  
   def create
     @instrument = current_user.instruments.build(instrument_params)
 
@@ -39,8 +50,7 @@ class InstrumentsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /instruments/1
-  # PATCH/PUT /instruments/1.json
+  
   def update
     respond_to do |format|
       if @instrument.update(instrument_params)
@@ -53,8 +63,7 @@ class InstrumentsController < ApplicationController
     end
   end
 
-  # DELETE /instruments/1
-  # DELETE /instruments/1.json
+ 
   def destroy
     @instrument.destroy
     respond_to do |format|
@@ -64,14 +73,20 @@ class InstrumentsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
     def set_instrument
       @instrument = Instrument.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+   
     def instrument_params
-      params.require(:instrument).permit(:brand, :model, :description, :condition, :finish, :title, :price, :image)
+      params.require(:instrument).permit(:brand, :model, :description, :condition, :finish, :title, :price, :image, :quantity)
+    end
+
+    def acc_type_is_customer?
+       if current_user.accountable_type == "Customer"
+         redirect_to root_path
+       end
     end
 end
 

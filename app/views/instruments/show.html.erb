@@ -1,5 +1,10 @@
 <% content_for :body_class, 'bg-light' %>
 
+
+<%if user_signed_in? && (current_user.accountable_type=="Seller" && not(instrument_author(@instrument)))%>
+<h1> You are not allowed to view this product </h1>
+<%else%>
+
 <section class="section instrument-show">
   <div class="columns">
     <div class="column is-8">
@@ -55,14 +60,20 @@
           <td class="has-text-weight-bold">Model:</td>
           <td><%= @instrument.model %></td>
         </tr>
+        <tr>
+          <td class="has-text-weight-bold">Quantity available:</td>
+          <td><%= @instrument.quantity %></td>
+        </tr>
       </table>
     </div>
     </div>
     <div class="column is-3 is-offset-1">
       <div class="bg-white pa4 border-radius-3">
         <h4 class="title is-5 has-text-centered"><%= number_to_currency(@instrument.price) %></h4>
+        <%if user_signed_in? && current_user.accountable_type=="Customer"%>
         <p class="has-text-centered mb4">Sold by <%= @instrument.user.name %></p>
-        <% if user_signed_in? %>
+        <%end%>
+        <% if user_signed_in? && @instrument.quantity>=1 && current_user.accountable_type=="Customer"%>
         <%= button_to 'Add to cart', line_items_path(instrument_id: @instrument), class: 'button is-warning add-to-cart' %> 
         <%end%>
       </div>
@@ -72,7 +83,9 @@
   <% if instrument_author(@instrument) %>
     <%= link_to 'Edit', edit_instrument_path(@instrument), class: 'button' %>
   <% end %>
+
 </section>
+<%end%>
 
 
 

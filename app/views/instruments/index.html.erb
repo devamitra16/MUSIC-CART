@@ -1,17 +1,71 @@
 <% content_for :header do %>
-<section class="hero is-warning">
+<section class="hero is-primary">
   <div class="hero-body">
     <div class="container">
-      <h1 class="title">
-        Browse the latest instruments on music cart
+      <%if user_signed_in? %>
+  <% if current_user.accountable_type=="Seller"%>
+  <h1 class="title">
+        YOUR PRODUCTS!!
       </h1>
+
+      
+      <%else%>
+      <h1 class="title">
+        What's new!!
+      </h1>
+      <%end%>
+      <%else%>
+      <h1 class="title">
+        What's new!!
+      </h1>
+      <%end%>
     </div>
   </div>
 </section>
-<% end %>
+<%end%>
 
 <div class="instrument-index-grid pt4">
-  <% @instruments.each do |instrument| %>
+  <%if user_signed_in? %>
+  <% if current_user.accountable_type=="Seller"%>
+  <% current_user.instruments.each do |instrument| %>
+
+    <div class="instrument border-light">
+      <div class="instrument-thumb">
+      <%= link_to image_tag(instrument.image_url(:thumb)), instrument %>
+
+      <% if instrument.condition? %>
+        <div class="condition">
+          <span class="tag is-dark"><%= instrument.condition %></span>
+        </div>
+      <% end %>
+    </div>
+  
+
+    <div class="pa3">
+
+      <h3 class="fw7 f4 title"><%= link_to instrument.title, instrument %></h3>
+
+      
+
+      <p class="f3 fw6 has-text-right pt2 price"><%= number_to_currency(instrument.price) %></p>
+       
+      <%#elsif current_user.accountable_type=="Seller"%>
+      
+      
+
+      </div>
+      <% if instrument_author(instrument) %>
+         <%= link_to 'Edit', edit_instrument_path(instrument), class: "button is-small" %>
+         <%= link_to 'Delete', instrument, method: :delete, data: { turbolinks_method: :delete }, class: "button is-small" %>
+      <% end %>
+  </div>
+
+  <% end %>
+</div>
+     
+  
+      <%else%>
+      <% @instruments.each do |instrument| %>
 
     <div class="instrument border-light">
       <div class="instrument-thumb">
@@ -32,13 +86,47 @@
       <p class="has-text-gray fg pt1">Sold by <%= instrument.user.name %></p>
 
       <p class="f3 fw6 has-text-right pt2 price"><%= number_to_currency(instrument.price) %></p>
+       
+      <%#elsif current_user.accountable_type=="Seller"%>
+      
+      
 
-      <% if instrument_author(instrument) %>
-         <%= link_to 'Edit', edit_instrument_path(instrument), class: "button is-small" %>
-         <%= link_to 'Delete', instrument, method: :delete, data: { turbolinks_method: :delete }, class: "button is-small" %>
-      <% end %>
-
-    </div>
+      </div>
   </div>
   <% end %>
 </div>
+       <%end %>
+       <%else%>
+       <% @instruments.each do |instrument| %>
+
+    <div class="instrument border-light">
+      <div class="instrument-thumb">
+      <%= link_to image_tag(instrument.image_url(:thumb)), instrument %>
+
+      <% if instrument.condition? %>
+        <div class="condition">
+          <span class="tag is-dark"><%= instrument.condition %></span>
+        </div>
+      <% end %>
+    </div>
+  
+
+    <div class="pa3">
+
+      <h3 class="fw7 f4 title"><%= link_to instrument.title, instrument %></h3>
+
+      <p class="has-text-gray fg pt1">Sold by <%= instrument.user.name %></p>
+
+      <p class="f3 fw6 has-text-right pt2 price"><%= number_to_currency(instrument.price) %></p>
+       
+      <%#elsif current_user.accountable_type=="Seller"%>
+      
+      
+
+      </div>
+  </div>
+  <% end %>
+</div>
+      <%end%>
+   
+  
