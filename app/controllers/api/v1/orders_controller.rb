@@ -1,6 +1,6 @@
 class Api::V1::OrdersController < Api::V1::ApiController
   before_action :set_order, only: %i[ show update destroy ]
-  skip_before_action :verify_authenticity_token
+  #skip_before_action :verify_authenticity_token
   before_action :doorkeeper_authorize!
   def index
     @orders = Order.all

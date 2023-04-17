@@ -9,6 +9,9 @@ class Order < ApplicationRecord
 	belongs_to :cart
 
 	validates :address, :contact_number, presence: true
+	validates :address, length: { maximum: 1000, too_long: "%{count} characters is the maximum aloud. "}
+	validates :contact_number, numericality: {only_integer: true}
+	validates :contact_number,length: {minimum: 10, maximum: 10}
     
 	def total_price
     ordered_items.to_a.sum { |item| item.total_price }
@@ -29,3 +32,4 @@ end
 
    
 end
+	
