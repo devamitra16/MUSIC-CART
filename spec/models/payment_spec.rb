@@ -41,9 +41,14 @@ RSpec.describe Payment, type: :model do
 				expect(payment.valid?).to eq(false)
 			    end
 
-			    it 'should be not valid if card_number length  not equal to 12' do
+			    it 'should be not valid if card_number length  not lesser than 12' do
 				payment.card_number=9876543
 				expect(payment.valid?).to eq(false)
+				
+			end
+
+			   it 'should be not valid if card_number length  not greater than 12' do
+			
 				payment.card_number=987654398865443223456
 				expect(payment.valid?).to eq(false)
 			end
@@ -62,29 +67,28 @@ RSpec.describe Payment, type: :model do
 			it 'should be not valid if expiry month length  not greater than 2' do
 				payment.expiry_month=9876
 				expect(payment.valid?).to eq(false)
-				payment.expiry_month=9
-				expect(payment.valid?).to eq(false)
-				# payment.expiry_month=00
-				# expect(payment.valid?).to eq(false)
-				# payment.expiry_month=13
-				# expect(payment.valid?).to eq(false)
+				
+				
 			end
 				it 'should be not valid if expiry month length  not lesser than 2' do
 				
 				payment.expiry_month=9
 				expect(payment.valid?).to eq(false)
-				# payment.expiry_month=00
-				# expect(payment.valid?).to eq(false)
-				# payment.expiry_month=13
-				# expect(payment.valid?).to eq(false)
+			
 			end
-			it 'should be not valid if expiry month greater than 0' do
+			it 'should be not valid if expiry month not greater than 0' do
 				
 				
 				payment.expiry_month=00
 				expect(payment.valid?).to eq(false)
-				# payment.expiry_month=13
-				# expect(payment.valid?).to eq(false)
+				
+			end
+			it 'should be not valid if expiry month  greater than 12' do
+				
+				
+			
+				payment.expiry_month=13
+				expect(payment.valid?).to eq(false)
 			end
 
 			it 'should be not valid if expiry month is not an integer' do

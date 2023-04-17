@@ -11,20 +11,29 @@ RSpec.describe "Orders" ,type: :request do
 			
 			 it "creates a new order" do
 			 	expect(Order.count).to eq 0
-			 	# attr = attributes_for(:order)
-			 	# attr[:payment_attributes] = attributes_for(:payment)
-			 	#post :create, params:{order: {address: "cbe",contact_number: "9876543212",payment_attributes: [{card_number: "789698766789",expiry_month: 12,expiry_year: 2024,name_on_the_card: "devamitra",cvv:123}]}}
-			 	post :create, params:{address: "cbe",contact_number: "9876543212",payment_attributes: [card_number: "789698766789",expiry_month: 12,expiry_year: 2024,name_on_the_card: "devamitra",cvv:123], format: :json}
+			 	post :create, params:{address: "cbe",contact_number: "9876543212",payment_attributes: [card_number: "789698766789",expiry_month: 12,expiry_year: 2024,name_on_the_card: "devamitra",cvv:123]}
 			 	expect(Order.count).to eq 1
 			 	expect(response).to have_http_status(200)
 			 end
-			#  it "redirects to the orders path" do
-			#  	attr = attributes_for(:order)
-			#  	attr[:payment_attributes] = attributes_for(:payment)
-			#  	post :create, params:{order: attr}
-            #     expect(response).to redirect_to(orders_path)
-            # end
+			
     end
     
      
 end
+
+
+
+
+#  it "redirects to the orders path" do
+			#  	# attr = attributes_for(:order)
+			#  	# attr[:payment_attributes] = attributes_for(:payment)
+			#  	# post :create, params:{order: attr}
+            #     expect(response).to redirect_to(orders_path)
+            # end
+
+
+
+            # attr = attributes_for(:order)
+			 	# attr[:payment_attributes] = attributes_for(:payment)
+			 	#post :create, params:{order: {address: "cbe",contact_number: "9876543212",payment_attributes: [{card_number: "789698766789",expiry_month: 12,expiry_year: 2024,name_on_the_card: "devamitra",cvv:123}]}}
+			 	
