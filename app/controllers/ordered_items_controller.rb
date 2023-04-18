@@ -4,7 +4,7 @@ class OrderedItemsController < ApplicationController
   
 
   def index
-    @ordered_items = OrderedItem.all
+    @ordered_items = current_user.OrderedItem.all
   end
 
   
@@ -50,10 +50,15 @@ class OrderedItemsController < ApplicationController
 
  
   def destroy
-    @ordered_item.destroy
+   @orders = current_user.orders
+    @ordered_item.instrument.quantity+=@ordered_item.quantity
+    @ordered_item.instrument.save
+    @ordered_item.order_status="cancelled"
+    @ordered_item.save
+   
 
     respond_to do |format|
-      format.html { redirect_to ordered_items_url, notice: "Ordered item was successfully destroyed." }
+      format.html { redirect_to ordered_items_url }
       format.json { head :no_content }
     end
   end

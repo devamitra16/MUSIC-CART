@@ -28,7 +28,9 @@ Rails.application.routes.draw do
   resources :customers
   resources :sellers
   resources :ordered_items
-  resources :order_items
+  resources :wishlist do
+    post '/insert' =>'wishlist#insert', on: :collection
+  end
   resources :orders do
     resources :payments
   end

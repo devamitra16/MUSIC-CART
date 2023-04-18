@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_17_072702) do
+ActiveRecord::Schema.define(version: 2023_04_18_051657) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
@@ -67,9 +67,9 @@ ActiveRecord::Schema.define(version: 2023_04_17_072702) do
     t.integer "quantity"
   end
 
-  create_table "instruments_users", id: false, force: :cascade do |t|
+  create_table "instruments_wishlists", id: false, force: :cascade do |t|
     t.integer "instrument_id", null: false
-    t.integer "user_id", null: false
+    t.integer "wishlist_id", null: false
   end
 
   create_table "line_items", force: :cascade do |t|
@@ -116,6 +116,7 @@ ActiveRecord::Schema.define(version: 2023_04_17_072702) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "quantity"
+    t.string "order_status", default: "ordered"
     t.index ["instrument_id"], name: "index_ordered_items_on_instrument_id"
     t.index ["order_id"], name: "index_ordered_items_on_order_id"
   end
@@ -167,10 +168,19 @@ ActiveRecord::Schema.define(version: 2023_04_17_072702) do
     t.string "accountable_type"
     t.integer "accountable_id"
     t.integer "cart_id"
+    t.integer "wishlist_id"
     t.index ["accountable_type", "accountable_id"], name: "index_users_on_accountable_type_and_accountable_id"
     t.index ["cart_id"], name: "index_users_on_cart_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["wishlist_id"], name: "index_users_on_wishlist_id"
+  end
+
+  create_table "wishlists", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "user_id"
+    t.index ["user_id"], name: "index_wishlists_on_user_id"
   end
 
   add_foreign_key "carts", "users"
@@ -184,4 +194,6 @@ ActiveRecord::Schema.define(version: 2023_04_17_072702) do
   add_foreign_key "payments", "orders"
   add_foreign_key "payments", "users"
   add_foreign_key "users", "carts"
+  add_foreign_key "users", "wishlists"
+  add_foreign_key "wishlists", "users"
 end

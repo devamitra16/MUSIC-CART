@@ -6,6 +6,7 @@ class User < ApplicationRecord
   has_many :orders
   has_many :payments
   has_one :cart
+  has_one :wishlist
 
   validates_presence_of :password, :email
   

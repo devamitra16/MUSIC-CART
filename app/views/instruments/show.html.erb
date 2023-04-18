@@ -75,6 +75,9 @@
         <%end%>
         <% if user_signed_in? && @instrument.quantity>=1 && current_user.accountable_type=="Customer"%>
         <%= button_to 'Add to cart', line_items_path(instrument_id: @instrument), class: 'button is-warning add-to-cart' %> 
+        <br>
+        
+        <%= button_to 'Add to wishlist', insert_wishlist_index_path(instrument_id: @instrument), class: 'button is-warning add-to-cart' %> 
         <%end%>
       </div>
     </div>

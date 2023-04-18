@@ -16,6 +16,13 @@
       <!-- <div class="column is-3 has-text-right">
         <strong class="f4"><%#= number_to_currency(line_item.total_price) %></strong>
       </div> -->
+      <div class="has-text-right">
+  <!-- <%#= link_to 'Add quantity',r,method: :get, class: "button is-small mb4" %>
+  <%#= link_to 'Reduce quantity',root_path,method: :get, class: "button is-small mb4" %> -->
+  <%if ordered_item.order_status == "ordered"%>
+  <%= link_to 'Remove Item', line_item, method: :delete, data: { confirm: "Are you sure? " }, class: "button is-small mb4" %>
+  <%end%>
+</div>
     </div>
   </div>
 </div>

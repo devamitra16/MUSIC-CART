@@ -1,48 +1,48 @@
-<!-- <p id="notice"><%#= notice %></p>
-
-<h1>Orders</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <%# @orders.each do |order| %>
-      <tr>
-        <td><%#= link_to 'Show', order %></td>
-        <td><%#= link_to 'Edit', edit_order_path(order) %></td>
-        <td><%#= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <%#end %>
-  </tbody>
-</table>
-
-<br>
-
-<%#= link_to 'New Order', new_order_path %> -->
-
-<h2>THANK YOU FOR SHOPPING</h2>
-     <p>Your Order has been placed successfully</p> 
-<div class="keep-shopping pv1 mt4 has-text-right">
-  <%= link_to 'Keep Shopping', instruments_path, class: 'button is-warning' %>
-</div>
-
-<!-- <section class="section">
-  <%#= render(@order.ordered_items) %>
-
- <div class="columns">
-    <div class="column">
+<section class="section">
+<% @orders.each do |order| %>
+<%order.ordered_items.each do |ordered_item|%>
+  <div class="columns align-items-center">
+  <div class="column is-1">
+    <%= ordered_item.quantity %>
+  </div>
+  <div class="column is-2">
+    <figure class="is-128x128 image">
+      <%= image_tag(ordered_item.instrument.image_url(:thumb)) %>
+    </figure>
+  </div>
+  <div class="column is-9">
+    <strong><%= ordered_item.instrument.title %></strong>
+    <div class="columns align-items-center">
+      <div class="content column is-9">
+        <%= truncate(ordered_item.instrument.description, length: 140) %>
+        <br>
+        <%=ordered_item.created_at%>
       
-    </div>
-    <div class="column total has-text-right">
-      <h4 class="title is-4">
-        <span class="f5 has-text-grey">Total:</span> <%#= number_to_currency(@cart.total_price) %>
-      </h4>
-    </div>
-  </div> -->
-<!-- </section>  --> -->
+      </div>
+      <div class="column is-3 has-text-right">
+        <strong class="f4"><%= number_to_currency(ordered_item.total_price) %></strong>
+        <%if ordered_item.order_status == "ordered"%>
+  <%= link_to 'Cancel order', ordered_item, method: :delete, data: { confirm: "Are you sure? " }, class: "button is-small mb4" %>
+  <%end%>
+      </div>
+      <div class="has-text-right">
+  <!-- <%#= link_to 'Add quantity',r,method: :get, class: "button is-small mb4" %>
+  <%#= link_to 'Reduce quantity',root_path,method: :get, class: "button is-small mb4" %> -->
+  <%if ordered_item.order_status == "ordered"%>
+  <%= link_to 'Remove Item', ordered_item, method: :delete, data: { confirm: "Are you sure? " }, class: "button is-small mb4" %>
+  <%end%>
 
+</div>
+    </div>
+  </div>
+</div>
+<br>
+      <br>
+      <br>
+      <br>
+       <%end%>
+      
+    <% end %>
 
+</section>
+<h1> <%="no items"%></h1>

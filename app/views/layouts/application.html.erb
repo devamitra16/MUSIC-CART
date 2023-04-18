@@ -31,8 +31,10 @@
       <!-- search -->
       <div class="field column is-9 head">
         <form class="field column is-9" action="/search">
-        <input class="input" name="q" type="text"  placeholder="Search" aria-label="Search" value=<%= params[:q] || "" %>><br/>
+        
+        <input class="input" name="q" type="text"  placeholder="Search" aria-label="Search" value=<%= params[:q] || "" %>>
         <button class= "button is-danger" type="submit">Search</button>
+
       </form>
       </div>
          
@@ -70,8 +72,27 @@
             
             <% if user_signed_in?  %>
             <%if current_user.accountable_type =="Customer"%>
-            <%= link_to 'My orders', ordered_items_path , class: "navbar-item button is-dark" %>
-            <%= link_to 'Cart',@cart , class: "navbar-item button is-dark" %>
+             <p class="buttons">
+               <button class="button is-warning">
+            <span>
+            <%= link_to 'My orders', orders_path  %>
+           </span>
+       </button>
+           
+           <button class="button is-warning">
+            <span>
+
+            <%= link_to 'Cart',@cart  %>
+           
+         </span>
+       </button>
+       <button class="button is-warning">
+            <span>
+            <%= link_to 'Wishlist',wishlist_path(current_user)  %>
+            </span>
+       </button>
+          </p>
+         
             <%elsif current_user.accountable_type =="Seller"%>
               <%= link_to 'Sell', new_instrument_path, class: "navbar-item button is-dark" %>
             <%end%>

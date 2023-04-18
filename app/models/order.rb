@@ -22,12 +22,12 @@ class Order < ApplicationRecord
     cart.line_items.destroy_all
   end
 
-  def check_cart_has_line_items
-     if cart.line_items.count <= 0
-     	errors.add(:base, "You dont have any items in your cart")
-      throw :abort
-  end
-end
+  # def check_cart_has_line_items
+  #    if cart.line_items.count <= 0
+  #    	errors.add(:base, "You dont have any items in your cart")
+  #     throw :abort
+  # end
+#end
 
 
    

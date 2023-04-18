@@ -6,6 +6,7 @@ class Instrument < ApplicationRecord
   has_many :carts, through: :line_items
   has_many :ordered_items, dependent: :destroy
   has_many :orders, through: :ordered_items
+  has_and_belongs_to_many :wishlists, dependent: :destroy
   
   mount_uploader :image, ImageUploader
   serialize :image, JSON 

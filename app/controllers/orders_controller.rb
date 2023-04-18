@@ -4,7 +4,7 @@ class OrdersController < ApplicationController
   
 
   def index
-    @orders = Order.all
+    @orders = current_user.orders.all
   end
 
 
@@ -25,14 +25,20 @@ class OrdersController < ApplicationController
 
  
   def create
+
   @order = Order.new(order_params)
+  # p @order.errors
   @order.user = current_user
+  # p @order.errors
   @payment = @order.payment
   @payment.user = current_user
+  # p @order.errors
   
   
   @order.cart=current_user.cart
+   # p @order.errors
   @order.save
+  p @order.errors
 
 
   
@@ -44,7 +50,7 @@ class OrdersController < ApplicationController
           )
           
           end
-
+# @order.errors
   @payment.order_id=@order.id
   @payment.pay_amount = @order.total_price
   @payment.save 
@@ -52,7 +58,7 @@ class OrdersController < ApplicationController
   # current_user.cart.line_items.destroy_all
   # Cart.destroy(session[:cart_id])
   # session[:cart_id] = nil
-    redirect_to orders_path
+    redirect_to order_path(@order)
   end
 
 

@@ -37,7 +37,17 @@
       </div>
       <div class="column is-3 has-text-right">
         <strong class="f4"><%= number_to_currency(ordered_item.total_price) %></strong>
+        <%if ordered_item.order_status == "ordered"%>
+  <%= link_to 'Cancel order', ordered_item, method: :delete, data: { confirm: "Are you sure? " }, class: "button is-small mb4" %>
+  <%end%>
       </div>
+      <div class="has-text-right">
+  <!-- <%#= link_to 'Add quantity',r,method: :get, class: "button is-small mb4" %>
+  <%#= link_to 'Reduce quantity',root_path,method: :get, class: "button is-small mb4" %> -->
+  <%if ordered_item.order_status == "ordered"%>
+  <%= link_to 'Remove Item', ordered_item, method: :delete, data: { confirm: "Are you sure? " }, class: "button is-small mb4" %>
+  <%end%>
+</div>
     </div>
   </div>
 </div>

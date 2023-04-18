@@ -1,0 +1,70 @@
+<%if user_signed_in?%>
+<%if current_user.wishlist.present? %>
+  <% if current_user.wishlist.instruments.present?%>
+  <strong><%="Your wishlist"%> </strong>
+  <br>
+  <br>
+    <% @wishlist.instruments.each do |product| %>
+      
+ 
+  <div class="row is-20">
+    <figure class="image is-128x128">
+      <%= image_tag(product.image_url(:thumb)) %>
+    </figure>
+  </div>
+  <br>
+  <br>
+  <br>
+  <br>
+
+    <div class="column is-50">
+    
+    	
+    <strong><%= product.title %></strong>
+    <br>
+    <br>
+  
+   
+        <%= truncate(product.description, length: 140) %>
+      
+      
+         <p>Seller:
+                          <%= product.user.name %>
+                      </p>
+                      
+    
+        <p>Price: 
+      	<strong><%= number_to_currency(product.price) %></strong>
+      </p>
+      </div>
+      
+     <div class="column is-15 has-text-left">
+
+        <%= link_to 'Have a look at your favourite instrument', instrument_path(product), class:"button is-warning" %>
+        <br>
+        <br>
+        
+                            <%= button_to  'remove', wishlist_path(:id => current_user.id,:instrument_id => product.id ,:wishlist_id => @wishlist.id),
+                                    method: :delete, data: { confirm: 'Are you sure?' } ,class:"navbar-item button is-danger"%>  
+      </div>
+   
+
+
+      <br>
+      <br>
+      <br> 
+                        
+      <%end%> 
+       <%else%>
+       <strong> <%="Your wishlist is empty"%> </strong>               
+                      
+    <%end%>
+
+      
+      <%else%>
+       <strong> <%="Your wishlist is empty"%> </strong>               
+                      
+    <%end%>
+<%else%>
+<strong><%="You are not signed in"%> </strong>
+   <%end%>

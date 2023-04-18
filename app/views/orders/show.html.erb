@@ -2,16 +2,8 @@
 
 <%#= link_to 'Edit', edit_order_path(@order) %> |
 <%#= link_to 'Back', orders_path %> -->
-
-<h2>All Orders</h2>
-
-<% @orders.each do |order| %>
-  <p>Name: <%= order.name %></p>
-  <p>Email: <%= order.email %></p>
-  <p>Line Items: </p>
-  <ul>
-    <% order.line_items.each do |item| %>
-    <li><%= item.quantity %> x <%= item.product.name %></li>
-    <% end %>
-  </ul>
-<% end%>
+<h2>THANK YOU FOR SHOPPING</h2>
+     <p>Your Order has been placed successfully</p> 
+<div class="keep-shopping pv1 mt4 has-text-right">
+  <%= link_to 'Keep Shopping', instruments_path, class: 'button is-warning' %>
+</div>
