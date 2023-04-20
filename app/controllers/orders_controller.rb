@@ -25,39 +25,51 @@ class OrdersController < ApplicationController
 
  
   def create
+  if order_params[:payment_method]=="CashOnDelievery"
 
-  @order = Order.new(order_params)
-  # p @order.errors
-  @order.user = current_user
-  # p @order.errors
-  @payment = @order.payment
-  @payment.user = current_user
-  # p @order.errors
-  
-  
-  @order.cart=current_user.cart
-   # p @order.errors
-  @order.save
-  p @order.errors
-
+    @order=Order.new(order_params)
+    @order.user = current_user
+      @order.cart=current_user.cart
+     @order.save
 
   
         current_user.cart.line_items.each do |line_item|
-        
+          p @order.errors
           @order.ordered_items.create!(         
              instrument_id: line_item.instrument_id,
              quantity:   line_item.quantity 
           )
-          
-          end
-# @order.errors
+        end
+          @order.save
+  else
+
+  @order = Order.new(order_payment_params)
+  @order.user = current_user
+  @payment = @order.payment
+  @payment.user = current_user
+  @order.cart=current_user.cart
+  @order.save
+
+  
+        current_user.cart.line_items.each do |line_item|
+          p @order.errors
+          @order.ordered_items.create!(         
+             instrument_id: line_item.instrument_id,
+             quantity:   line_item.quantity 
+          )
+        end
+          @order.save
+
   @payment.order_id=@order.id
   @payment.pay_amount = @order.total_price
+
   @payment.save 
-    @order.save     
-  # current_user.cart.line_items.destroy_all
+    @order.save  
+    end   
+  current_user.cart.line_items.destroy_all
   # Cart.destroy(session[:cart_id])
   # session[:cart_id] = nil
+
     redirect_to order_path(@order)
   end
 
@@ -77,7 +89,14 @@ class OrdersController < ApplicationController
 
   
   def destroy
-    @order.destroy
+      # p "ookkk"
+
+      @order.order_status="cancelled"
+      @order.save
+      # @order.ordered_items.destroy_all
+      @order.payment&.destroy
+      # @order.destroy
+      # @order.save
 
     respond_to do |format|
       format.html { redirect_to orders_url, notice: "Order was successfully destroyed." }
@@ -92,9 +111,14 @@ class OrdersController < ApplicationController
     end
 
   
-    def order_params
-      params.require(:order).permit(:address,:contact_number,payment_attributes: [:card_number,:expiry_month,:expiry_year,:cvv,:name_on_the_card])
+    def order_payment_params
+      params.require(:order).permit(:address,:contact_number,:payment_method,payment_attributes: [:card_number,:expiry_month,:expiry_year,:cvv,:name_on_the_card])
     end
+
+    def order_params
+      params.require(:order).permit(:address,:contact_number,:payment_method)
+    end
+
     def acc_type_is_seller?
        if current_user.accountable_type == "Seller"
          redirect_to root_path, notice: "You are logged in as Seller"

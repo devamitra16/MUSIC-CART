@@ -1,9 +1,9 @@
 class Api::V1::ApiController < ActionController::API
 	
-	rescue_from StandardError, with: :error_500
+	#rescue_from StandardError, with: :error_500
     rescue_from ActiveRecord::RecordNotFound, with: :error_404
     rescue_from ActionController::ParameterMissing, with: :error_400
-  
+    #rescue_from ActiveRecord::UnprocessableEntity, with: :error_422
     before_action :doorkeeper_authorize!
 
     def current_user
@@ -24,6 +24,9 @@ class Api::V1::ApiController < ActionController::API
 
     def error_500(error)
         render json: {message:error.message}, status: :internal_server_error
+    end
+    def error_422(error)
+    	render json: {message:error.message}, status: :unprocessable_entity
     end
 
     def doorkeeper_authorize!

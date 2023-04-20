@@ -14,6 +14,7 @@ class User < ApplicationRecord
 
   scope :customer, -> { where(accountable_type: "Customer") }
   scope :seller, -> { where(accountable_type: "Seller") }
+  
 
  
 

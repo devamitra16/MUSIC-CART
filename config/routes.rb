@@ -5,13 +5,19 @@ Rails.application.routes.draw do
   
   namespace :api do
     namespace :v1 do
-       resources  :orders, only:[:index, :show, :create, :update, :destroy]
-       resources  :line_items, only:[:index, :show, :create, :update, :destroy]
-       resources  :carts, only:[:index, :show, :create, :update, :destroy]
-       resources  :instruments, only:[:index, :show, :create, :update, :destroy]
-       resources  :ordered_items, only:[:index, :show, :create, :update, :destroy]
-       resources  :payments, only:[:index, :show, :create, :update, :destroy]
-       resources  :registrations, only:[:create]
+       resources  :orders
+   
+       resources  :carts do
+          post '/insert'=>'carts#insert', on: :collection
+          post '/add_quantity'=>'carts#add_quantity',on: :collection
+          post '/remove_quantity'=>'carts#remove_quantity',on: :collection
+           post '/remove_item'=>'carts#remove_item',on: :collection
+
+        end
+       resources  :instruments
+       resources  :ordered_items
+       resources  :payments
+      
 
        # scope  'cart/add/' do
        #    get "instruments/:id", to: ""
@@ -31,9 +37,9 @@ Rails.application.routes.draw do
   resources :wishlist do
     post '/insert' =>'wishlist#insert', on: :collection
   end
-  resources :orders do
+  resources :orders 
     resources :payments
-  end
+  
   resources :line_items do
     get :add_quantity, on: :member
     get :remove_quantity, on: :member

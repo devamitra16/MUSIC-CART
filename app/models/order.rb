@@ -1,10 +1,11 @@
 class Order < ApplicationRecord
-    after_create :destroy_line_items_from_cart 
-    #before_create :check_cart_has_line_items
+    
+    before_create :check_cart_has_line_items
 	has_many :ordered_items
 	has_many:instruments, through: :ordered_items
     has_one :payment
     accepts_nested_attributes_for :payment
+    attr_accessor :skip_payment_card_number_validation
 	belongs_to :user
 	belongs_to :cart
 
@@ -18,16 +19,14 @@ class Order < ApplicationRecord
   end
 
   private
-  def destroy_line_items_from_cart
-    cart.line_items.destroy_all
-  end
+ 
 
-  # def check_cart_has_line_items
-  #    if cart.line_items.count <= 0
-  #    	errors.add(:base, "You dont have any items in your cart")
-  #     throw :abort
-  # end
-#end
+  def check_cart_has_line_items
+     if cart.line_items.count <= 0
+     	errors.add(:base, "You dont have any items in your cart")
+      throw :abort
+  end
+end
 
 
    

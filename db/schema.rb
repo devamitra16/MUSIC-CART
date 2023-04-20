@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_18_051657) do
+ActiveRecord::Schema.define(version: 2023_04_19_033818) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
@@ -116,7 +116,6 @@ ActiveRecord::Schema.define(version: 2023_04_18_051657) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "quantity"
-    t.string "order_status", default: "ordered"
     t.index ["instrument_id"], name: "index_ordered_items_on_instrument_id"
     t.index ["order_id"], name: "index_ordered_items_on_order_id"
   end
@@ -128,6 +127,8 @@ ActiveRecord::Schema.define(version: 2023_04_18_051657) do
     t.string "contact_number"
     t.integer "user_id"
     t.integer "cart_id"
+    t.string "order_status", default: "ordered"
+    t.string "payment_method", default: "CashOnDelievery"
     t.index ["cart_id"], name: "index_orders_on_cart_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end

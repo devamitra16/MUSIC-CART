@@ -3,9 +3,17 @@ require 'rails_helper'
 RSpec.describe Order, type: :model do
 	describe 'Validations' do
 		context 'While placing order' do
-			
-			let(:order){build(:order)}
+			let(:customer){create(:customer)}
+		   let(:customer_user){create(:user, accountable: customer)}
+		   let(:seller){create(:seller)}
+		   let(:seller_user){create(:user, accountable: seller, email: "priya@gmail.com", password: "deva16")}
+		   let(:cart){create(:cart, user: customer_user)}
+		    let(:instrument) {create(:instrument,user: seller_user)}
+			let(:order){build(:order,user: customer_user,cart: cart)}
 
+            it 'is valid with all the params' do
+            	expect(order.valid?).to eq(true)
+            end
 			
 			it 'is not valid for order without address' do
                 
@@ -45,24 +53,36 @@ RSpec.describe Order, type: :model do
 	end
 
 	describe 'Callbacks' do
-		let(:user){create(:user)}
-		let(:order){create(:order,user: user)}
-		let(:cart){create(:cart,user: user)}
-		context 'destroy_line_items' do
-        it 'should destroy line_items after placing order'do
-        expect(cart.line_items.empty?).to eq(true)
-        end
+		    let(:customer){create(:customer)}
+		    let(:customer_user){create(:user, accountable: customer)}
+		    let(:seller){create(:seller)}
+		    let(:seller_user){create(:user, accountable: seller, email: "seetha@gmail.com", password: "deva16")}
+		    let(:cart){create(:cart, user: customer_user)}
+		    let(:instrument) {create(:instrument,user: seller_user)}
+			let(:order){build(:order,user: customer_user,cart: cart)}
+			before do
+				cart.instruments<<instrument
+			end
+		
+        context 'line_items_present' do
+        	it 'should check whether line_items_present before placing order' do
+        		expect(cart.instruments.present?). to eq(true)
+        	end
        end
 	end
 
 	describe 'Associations' do
-		let(:user){build(:user)}
-		let(:cart){create(:cart, user: user)}
-		let(:order) {build(:order,user: user,cart: cart)}
+		   let(:customer){create(:customer)}
+		   let(:customer_user){create(:user, accountable: customer)}
+		   let(:seller){create(:seller)}
+		   let(:seller_user){create(:user, accountable: seller, email: "aishwarya@gmail.com", password: "deva16")}
+		   let(:cart){create(:cart, user: customer_user)}
+		    let(:instrument) {create(:instrument,user: seller_user)}
+			let(:order){build(:order,user: customer_user,cart: cart)}
 
 
 		it 'belongs to a user' do
-			expect(order.user).to eq_to(user)
+			expect(order.user).to eq_to(customer_user)
 		end
 		
 		it 'belongs to a cart' do

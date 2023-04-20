@@ -1,5 +1,7 @@
 <section class="section">
 <% @orders.each do |order| %>
+<strong class="f4"> <%="Ordered on :"%><%=order.created_at%></strong>
+<div class="box">
 <%order.ordered_items.each do |ordered_item|%>
   <div class="columns align-items-center">
   <div class="column is-1">
@@ -17,22 +19,21 @@
         <%= truncate(ordered_item.instrument.description, length: 140) %>
         <br>
         <%=ordered_item.created_at%>
+        <br>
+       <strong> <%="Delivery address:"%></strong>
+        <br>
+         <%=order.address%>
+        
+        <br>
+        <%=order.contact_number%>
+       
       
       </div>
       <div class="column is-3 has-text-right">
         <strong class="f4"><%= number_to_currency(ordered_item.total_price) %></strong>
-        <%if ordered_item.order_status == "ordered"%>
-  <%= link_to 'Cancel order', ordered_item, method: :delete, data: { confirm: "Are you sure? " }, class: "button is-small mb4" %>
-  <%end%>
+        
       </div>
-      <div class="has-text-right">
-  <!-- <%#= link_to 'Add quantity',r,method: :get, class: "button is-small mb4" %>
-  <%#= link_to 'Reduce quantity',root_path,method: :get, class: "button is-small mb4" %> -->
-  <%if ordered_item.order_status == "ordered"%>
-  <%= link_to 'Remove Item', ordered_item, method: :delete, data: { confirm: "Are you sure? " }, class: "button is-small mb4" %>
-  <%end%>
 
-</div>
     </div>
   </div>
 </div>
@@ -41,8 +42,17 @@
       <br>
       <br>
        <%end%>
+       <%if order.order_status == "ordered"%>
+
+  <%= button_to 'Cancel order',order_path(order.id), method: :delete, data: { confirm: "Are you sure? " }, class: "button is-small mb4" %>
+  <%elsif order.order_status == "delievered"%>
+  <button class="button"><%="Delievered"%></button>
+  <%else%>
+  <button class="button"><%="Cancelled"%></button>
+  <%end%>
+     </div>
       
     <% end %>
 
 </section>
-<h1> <%="no items"%></h1>
+

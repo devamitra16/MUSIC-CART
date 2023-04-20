@@ -4,3 +4,38 @@
 
 <%= link_to 'Show', @order %> |
 <%= link_to 'Back', carts_path %>
+<h1>Payment via debit/credit</h1>
+
+    <%= f.fields_for :payment do |payments_form| %>
+        <p>
+    <%= payments_form.label :card_number%><br>
+    <%= payments_form.text_area :card_number %>
+  </p>
+  <p>
+    <%= payments_form.label :expiry_month %><br>
+    <%= payments_form.text_area :expiry_month %>
+  </p>
+  <p>
+    <%= payments_form.label :expiry_year %><br>
+    <%= payments_form.text_area :expiry_year %>
+  </p>
+  <p>
+    <%= payments_form.label :cvv %><br>
+    <%= payments_form.text_area :cvv%>
+  </p>
+  <p>
+    <%= payments_form.label :name_on_the_card %><br>
+    <%= payments_form.text_area :name_on_the_card %>
+  </p>
+  <p>
+    
+
+    <% end %>
+    <%= f.submit :Place_order , class: 'button is-warning'%>
+  <!-- <div class="form-inputs">
+  </div>
+
+  <div class="form-actions">
+    <%#= f.button :submit %>
+  </div> -->
+<%end %>

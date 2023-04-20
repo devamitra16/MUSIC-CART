@@ -12,7 +12,7 @@
 <%# end %>
  -->
 
- 
+
 
  <%#= form_with model: @payment, local: true do |f| %>
   <%= simple_form_for(@payment) do |f| %>
@@ -39,6 +39,8 @@
     <%= f.label :name_on_the_card %><br>
     <%= f.text_area :name_on_the_card %>
   </p>
+
+ 
   <p>
     <%= f.submit :Place_order , class: 'button is-warning'%>
     <%#= link_to 'SUBMIT',order_path, class:'button is-light' %>

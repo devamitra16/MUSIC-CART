@@ -1,4 +1,3 @@
-
 <%= form_with model: @order, local: true do |f| %>
   
  
@@ -10,12 +9,20 @@
     <%= f.label :Delivery_address %><br>
     <%= f.text_area :address %>
   </p>
-<br>
   <p>
-    <%= f.submit :Cash_on_delivery , class: 'button is-warning'%>
+    <%= f.label :payment_method %><br>
+    <%= f.select :payment_method, [["CashOnDelievery", "CashOnDelievery"], ["DebitOrCredit", "DebitOrCredit"]] %>
+  </p>
+
+<br>
+  <div id="cod">
+  <p>
+    <%= f.submit :Place_order , class: 'button is-warning'%>
     <%#= link_to 'SUBMIT',order_path, class:'button is-light' %>
   </p>
+</div>
   <br>
+  <div id="pay">
   <h1>Payment via debit/credit</h1>
 
     <%= f.fields_for :payment do |payments_form| %>
@@ -46,14 +53,38 @@
 <%= f.submit :Place_order , class: 'button is-warning'%>
   <!-- <div class="form-inputs">
   </div>
-
   <div class="form-actions">
     <%#= f.button :submit %>
   </div> -->
 <%end %>
+</div>
 
 <br>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js">
+  
+</script>
+<script>
+  $(document).ready(function(){
+     $("#pay").hide();
+    $("#cod").show();
+
+
+});
+  $("#order_payment_method").change(function(e){
+    
+    
+    if ($('#order_payment_method').val()=="CashOnDelievery"){
+    $("#pay").hide();
+    $("#cod").show();
+  }else{
+    $("#pay").show();
+    $("#cod").hide();
+  }
+  });
+
+  
+ 
+</script>
+
 
 <%#= link_to 'Payment-debit/credit',new_order_payment_path(@order),class: "button is-danger" %>
-
-

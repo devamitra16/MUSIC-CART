@@ -2,17 +2,22 @@ require 'rails_helper'
 
 RSpec.describe InstrumentsController do
 	context "GET #index" do
-		let!(:user){create(:user)}
-		let!(:instrument){create(:instrument,user: user)}
+	  let(:seller){create(:seller)}
+      let(:customer){create(:customer)}
+      let(:seller_user){create(:user,accountable: seller,email: "kalai98@gmail.com",password:"deva16")}
+      let(:customer_user){create(:user,accountable: customer)}
+      let(:instrument){create(:instrument)}
 		it "assigns all instruments as @instruments" do
 			get :index
 			expect(assigns(:instruments)).to eq([instrument])
 		end
 	end
 	context "GET #show" do
-		let(:seller) {create(:seller)}
-	    let(:user){create(:user, accountable: seller)}
-	    let(:instrument){create(:instrument,user: user)}
+	  let(:seller){create(:seller)}
+      let(:customer){create(:customer)}
+      let(:seller_user){create(:user,accountable: seller,email: "kalai908@gmail.com",password:"deva16")}
+      let(:customer_user){create(:user,accountable: customer)}
+      let(:instrument){create(:instrument)}
 	    it "shows a particular instrument" do
             get :show ,params: {id: instrument.id}
             expect(instrument.reload.title).to eq(instrument.title)
@@ -23,6 +28,7 @@ RSpec.describe InstrumentsController do
 
 
 	describe "POST #create" do
+
 		context "when user signed in" do
 			let(:seller) {create(:seller)}
 			let(:user){create(:user, accountable: seller)}
@@ -57,11 +63,12 @@ RSpec.describe InstrumentsController do
     	let(:seller) {create(:seller)}
 	    let(:user){create(:user, accountable: seller)}
         let(:instrument){create(:instrument,user: user)}
+        before{ sign_in(user)}
 	    it "deletes the instrument" do
 	    	
             delete :destroy, params:{id: instrument.id}
 	    	
-	    	expect(response). to be_redirect
+	    	expect(response). to redirect_to(instruments_path)
 	    end
 	end
 

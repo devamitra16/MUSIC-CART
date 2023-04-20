@@ -5,9 +5,13 @@ RSpec.describe User, :type => :model do
 	describe "Validations" do
    
    context 'while creating user' do
-  	let(:user1){create :user}
+    let(:customer){create :customer}
+  	let(:user1){create :user,accountable: customer}
   	let(:user2){build :user,email: ""}
   	let(:user3){build :user,password: ""}
+    it "is valid with correct paramters" do
+      expect(user1.valid?).to eq(true)
+    end
     it "is not valid without a password" do
      expect(user3.valid?).to eq(false)
     end

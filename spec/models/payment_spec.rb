@@ -5,11 +5,11 @@ RSpec.describe Payment, type: :model do
 		context 'While making payment' do
 			let(:user){create(:user)}
 			let(:cart){create(:cart,user: user)}
-			let(:order){create(:order,user: user,cart: cart)}
+			let(:order){build(:order,user: user,cart: cart)}
 			
-			let(:payment){create(:payment,user: user,order: order)}
+			let(:payment){build(:payment,user: user,order: order)}
 
-			
+
 			it 'is not valid for payment without cvv' do
 				payment.cvv=nil
 				expect(payment.valid?).to eq(false)
@@ -128,14 +128,19 @@ RSpec.describe Payment, type: :model do
 
 			end
 
+			it 'is valid with all the params' do
+				expect(payment.valid?).to eq(true)
+			end
+
 
 		 end
 	end
 	describe 'Associations' do
-		let(:user){build(:user)}
+		let(:customer){create(:customer)}
+		let(:user){build(:user,accountable: customer)}
 		let(:cart){create(:cart, user: user)}
 		let(:order) {build(:order,user: user,cart: cart)}
-		let(:payment){create(:payment,user: user,order: order)}
+		let(:payment){build(:payment,user: user,order: order)}
 
 
 		it 'belongs to a user' do

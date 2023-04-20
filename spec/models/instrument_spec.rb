@@ -3,11 +3,13 @@ require 'rails_helper'
 RSpec.describe Instrument, type: :model do
 	describe 'Validations' do
 		context 'While creating instrument' do
-			let(:user){create(:user)}
+			let(:seller){create(:seller)}
+			let(:seller_user){create(:user, accountable: seller, email: "yathik@gmail.com", password: "deva16")}
 			
-			let(:instrument){create(:instrument,user: user)}
+			let(:instrument){create(:instrument,user: seller_user)}
 
 			
+
 			it 'is not valid for instrument without title' do
 				instrument.title=nil
 				expect(instrument.valid?).to eq(false)
@@ -85,15 +87,23 @@ RSpec.describe Instrument, type: :model do
 				expect(instrument.valid?).to eq(true)
 			end
 
+			it 'is valid valid with all attributes' do
+				expect(instrument.valid?).to eq(true)
+			end
+
 
 
 		end
 	end
 
 	describe "Callback" do
-		let(:user){create(:user)}
-		let(:cart){create(:cart, user: user)}
-		let(:instrument){create(:instrument, user: user)}
+	  let(:seller){create(:seller)}
+      let(:customer){create(:customer)}
+      let(:seller_user){create(:user,accountable: seller,email: "kalai98@gmail.com",password:"deva16")}
+      let(:customer_user){create(:user,accountable: customer)}
+      
+      let(:instrument){create(:instrument,user: seller_user)}
+      let(:cart){create(:cart, user: customer_user)}
 
 		context "line_items_present" do
 			it "checks_for_line_items" do
@@ -112,10 +122,18 @@ RSpec.describe Instrument, type: :model do
 	end
 
 	describe "Associations" do
-		let(:user){create(:user)}
-		let(:instrument){create(:instrument,user: user)}
+      let(:seller){create(:seller)}
+      let(:customer){create(:customer)}
+      let(:seller_user){create(:user,accountable: seller,email: "kalai23@gmail.com",password:"deva16")}
+      let(:customer_user){create(:user,accountable: customer)}
+      let(:wishlist){create(:wishlist,user: customer_user)}
+      let(:instrument){create(:instrument,user: seller_user)}
 		it 'belongs to a user' do
-			expect(instrument.user).to eq(user)
+			expect(instrument.user).to eq(seller_user)
 		end
-	end
+
+	  
+
+	
+end
 end
