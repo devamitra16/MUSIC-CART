@@ -34,7 +34,7 @@ class OrdersController < ApplicationController
 
   
         current_user.cart.line_items.each do |line_item|
-          p @order.errors
+          
           @order.ordered_items.create!(         
              instrument_id: line_item.instrument_id,
              quantity:   line_item.quantity 
@@ -52,7 +52,7 @@ class OrdersController < ApplicationController
 
   
         current_user.cart.line_items.each do |line_item|
-          p @order.errors
+          
           @order.ordered_items.create!(         
              instrument_id: line_item.instrument_id,
              quantity:   line_item.quantity 

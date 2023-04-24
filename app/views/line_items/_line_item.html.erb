@@ -15,8 +15,13 @@
         <%= truncate(line_item.instrument.description, length: 140) %>
       </div>
       <%= text_field_tag 'quantity' , "#{line_item.quantity}",class: "button is-warning",disabled:true %>
-    <%= button_tag "+" ,{id: "addQuantity",class: "button is-danger" }%>
-    <%= button_tag "-" ,{id: "removeQuantity",class: "button is-danger" } %>
+      <%if line_item.instrument.quantity>=1%>
+    <%= button_tag "+" ,{id: "addQuantity",class: "button is-danger" , style: "margin-left:20px;"}%>
+    <%end%>
+    <%if line_item.quantity>1%>
+
+    <%= button_tag "-" ,{id: "removeQuantity",class: "button is-danger" , style: "margin-left:20px;"} %>
+    <%end%>
       <div class="column is-3 has-text-right">
         
       </div>

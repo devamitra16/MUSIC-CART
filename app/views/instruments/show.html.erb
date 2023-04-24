@@ -73,13 +73,14 @@
         <%if user_signed_in? && current_user.accountable_type=="Customer"%>
         <p class="has-text-centered mb4">Sold by <%= @instrument.user.name %></p>
         <%end%>
-        <% if user_signed_in? && @instrument.quantity>=1 && current_user.accountable_type=="Customer"%>
+        <% if  user_signed_in? && @instrument.quantity>=1 && current_user.accountable_type=="Customer"%>
         <%= button_to 'Add to cart', line_items_path(instrument_id: @instrument), class: 'button is-warning add-to-cart' %> 
+         <%end%>
         <br>
-        <%if current_user.wishlist.instruments.exclude?(@instrument)%>
+        <%if user_signed_in? && current_user.accountable_type=="Customer" && current_user.wishlist.instruments.exclude?(@instrument) && current_user.wishlist.present?%>
         <%= button_to 'Add to wishlist', insert_wishlist_index_path(instrument_id: @instrument), class: 'button is-warning add-to-cart' %> 
         <% end %>
-        <%end%>
+       
       </div>
     </div>
   </div>

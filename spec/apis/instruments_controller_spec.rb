@@ -12,6 +12,7 @@ RSpec.describe "Instruments" ,type: :request do
     let(:seller_token){create(:doorkeeper_access_token,resource_owner_id: seller_user.id)}
     let(:seller_token1){create(:doorkeeper_access_token,resource_owner_id: seller_user1.id)}
     let!(:instrument){create(:instrument,user: seller_user)}
+    
 	describe 'GET/api/instruments' do
 	
      

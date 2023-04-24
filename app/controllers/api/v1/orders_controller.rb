@@ -37,7 +37,7 @@ class Api::V1::OrdersController < Api::V1::ApiController
         end
         
          if @order.save
-            render json: {id: @order.id,message: "Order  is created successfully"} , status: 201
+            render json: @order , status: 201
            else
          render json: {
          message: "Order not created"

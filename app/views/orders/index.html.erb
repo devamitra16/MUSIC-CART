@@ -1,6 +1,8 @@
 <section class="section">
 <% @orders.each do |order| %>
 <strong class="f4"> <%="Ordered on :"%><%=order.created_at%></strong>
+<br>
+<br>
 <div class="box">
 <%order.ordered_items.each do |ordered_item|%>
   <div class="columns align-items-center">

@@ -61,6 +61,9 @@ RSpec.describe "Carts" ,type: :request do
     end
 
     describe "POST #insert" do
+    	before do
+    		cart.instruments<< instrument
+    	end
     	 it  "should need access token" do
 			post insert_api_v1_carts_path, params:{instrument_id:instrument.id}
             	
@@ -79,16 +82,82 @@ RSpec.describe "Carts" ,type: :request do
             expect(response).to have_http_status(:forbidden)
         end
 
-        # it "should allow customer to insert into cart" do
-        #     post insert_api_v1_carts_path, params:{access_token: customer_token.token,instrument_id:instrument.id,quantity:1}
+        it "should allow customer to insert into cart" do
+            post insert_api_v1_carts_path, params:{access_token: customer_token.token,instrument_id:instrument.id}
             	
             	
            
-        #     expect(response).to have_http_status(200)
-        # end
+            expect(cart.reload.instruments).to include(instrument)
+        end
+        it "should insert instrument into customer cart" do
+        	post insert_api_v1_carts_path, params:{access_token: customer_token.token,instrument_id:instrument.id}
+            expect(response).to have_http_status(200)
+        end
 
+    end
 
+    describe "POST #add_quantity" do
+    	before do
+    		cart.instruments<< instrument
+    	end
+    	 it  "should need access token" do
+			post add_quantity_api_v1_carts_path, params:{instrument_id:instrument.id}
+            	
+			expect(response).to have_http_status(:unauthorized)
+		  end
+		    it "should need instrument id params" do
+		  	post add_quantity_api_v1_carts_path, params:{access_token: customer_token.token}
+            	
+			expect(response).to have_http_status(:unprocessable_entity)
+		  end
+		   it "should not allow sellers to increase quantity into a customer cart" do
+            post add_quantity_api_v1_carts_path, params:{access_token: seller_token.token,instrument_id:instrument.id}
+            	
+            	
+           
+            expect(response).to have_http_status(:forbidden)
+          end
+
+           it "should add quantity of instrument into customer cart" do
+        	post add_quantity_api_v1_carts_path, params:{access_token: customer_token.token,instrument_id:instrument.id}
+            expect(response).to have_http_status(200)
+          end
+
+        
 
 
     end
+
+
+    describe "POST #remove_quantity" do
+    	before do
+    		cart.instruments<< instrument
+    	end
+    	 it  "should need access token" do
+			post remove_quantity_api_v1_carts_path, params:{instrument_id:instrument.id}
+            	
+			expect(response).to have_http_status(:unauthorized)
+		  end
+		    it "should need instrument id params" do
+		  	post remove_quantity_api_v1_carts_path, params:{access_token: customer_token.token}
+            	
+			expect(response).to have_http_status(:unprocessable_entity)
+		  end
+		   it "should not allow sellers to remove quantity into a customer cart" do
+            post remove_quantity_api_v1_carts_path, params:{access_token: seller_token.token,instrument_id:instrument.id}
+            	
+            	
+           
+            expect(response).to have_http_status(:forbidden)
+          end
+
+            it "should remove quantity of instrument into customer cart" do
+        	post remove_quantity_api_v1_carts_path, params:{access_token: customer_token.token,instrument_id:instrument.id}
+            expect(response).to have_http_status(204)
+          end
+
+    end
+
+    
+
 end

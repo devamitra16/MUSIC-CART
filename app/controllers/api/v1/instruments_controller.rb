@@ -40,7 +40,7 @@ class Api::V1::InstrumentsController < Api::V1::ApiController
     
     if @instrument.save
 
-      render json: {message: "Instrument with id #{@instrument.id } is created successfully"} , status: 201
+      render json: @instrument , status: 201
     else
       render json: {
         message: "Instrument not created"

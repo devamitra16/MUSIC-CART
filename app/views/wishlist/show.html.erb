@@ -1,14 +1,21 @@
 <%if user_signed_in?%>
 <%if current_user.wishlist.present? %>
   <% if current_user.wishlist.instruments.present?%>
-  <strong><%="Your wishlist"%> </strong>
+  <div style="margin-left: 400px;margin-top: 20px;">
+    <p>
+    <h4 class="title"> YOUR WISHLIST</h4> 
+  </p>
+  </div>
+  <div style="margin-left: 200px; margin-top: 25px;">
+    
   <br>
   <br>
     <% @wishlist.instruments.each do |product| %>
-      
- 
+    <div >
+      <div class="box">
+ <div style="margin-right: 200px" >
   <div class="row is-20">
-    <figure class="image is-128x128">
+    <figure class="image is-128x128 ">
       <%= image_tag(product.image_url(:thumb)) %>
     </figure>
   </div>
@@ -53,8 +60,13 @@
       <br>
       <br>
       <br> 
-                        
-      <%end%> 
+    </div>
+  </div>
+        </div>                
+      <%end%>
+
+    </div>
+
        <%else%>
        <strong> <%="Your wishlist is empty"%> </strong>               
                       

@@ -16,7 +16,7 @@ class Instrument < ApplicationRecord
   validates :title, length: { maximum: 30, too_long: "%{count} characters is the maximum aloud. "}
   validates :price, length: { maximum: 7 }
   validates :price, numericality: {only_decimal: true, greater_than: 0}
-  validates :quantity, numericality: {only_integer: true, greater_than: 0}
+  #validates :quantity, numericality: {only_integer: true, greater_than: 0}
 
   BRAND = %w{ Fender Gibson Epiphone ESP Martin Dean Taylor Jackson PRS  Ibanez Charvel Washburn }
   COLOR = %w{ Black White Navy Blue Red Clear Satin Yellow Seafoam }

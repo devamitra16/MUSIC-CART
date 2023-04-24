@@ -11,7 +11,11 @@
 
 
 <section class="section">
-<strong class="f4"><%="Your Order details"%></strong>
+<div style="margin-left: 350px;margin-top: 20px;">
+    <p>
+    <h4 class="title"> Your order details</h4> 
+  </p>
+  </div>
 <%@order.ordered_items.each do |ordered_item|%>
   <div class="columns align-items-center">
   <div class="column is-1">
@@ -29,6 +33,16 @@
         <%= truncate(ordered_item.instrument.description, length: 140) %>
         <br>
         <%=ordered_item.created_at%>
+        <br>
+       
+        <strong> <%="Delivery address:"%></strong>
+     
+        <br>
+         <%=@order.address%>
+        
+        <br>
+        <%=@order.contact_number%>
+       
       
       </div>
       <div class="column is-3 has-text-right">
@@ -43,9 +57,7 @@
       <br>
       <br>
        <%end%>
-       <br>
-       <%= button_to 'Cash on delivery' ,payments_path, method: :get,class: "button is-danger" %><br>
-       <%= button_to 'Payment via debit/credit' ,new_payment_path, method: :get,class: "button is-danger" %><br>
+       
       
   
 

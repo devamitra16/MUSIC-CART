@@ -1,6 +1,6 @@
 class Order < ApplicationRecord
     
-    before_create :check_cart_has_line_items
+    #before_create :check_cart_has_line_items
 	has_many :ordered_items
 	has_many:instruments, through: :ordered_items
     has_one :payment

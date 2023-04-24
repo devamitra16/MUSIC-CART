@@ -27,6 +27,8 @@ class LineItemsController < ApplicationController
   def create
     instrument = Instrument.find(params[:instrument_id])
     @line_item = @cart.add_instrument(instrument)
+    instrument.quantity-=1
+    instrument.save!
 
     respond_to do |format|
       if @line_item.save
@@ -58,6 +60,8 @@ class LineItemsController < ApplicationController
      @line_item.instrument.quantity-=1
      @line_item.instrument.save
      @line_item.save
+   
+
 
    end
     render json: { quantity: @line_item.quantity }
